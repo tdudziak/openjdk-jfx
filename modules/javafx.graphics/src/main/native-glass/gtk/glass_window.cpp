@@ -750,7 +750,6 @@ WindowContextTop::WindowContextTop(jobject _jwindow, WindowContext* _owner, long
     }
 
     gtk_widget_set_size_request(gtk_widget, 0, 0);
-    gtk_widget_set_events(gtk_widget, GDK_ALL_EVENTS_MASK);
     gtk_widget_set_app_paintable(gtk_widget, TRUE);
     if (frame_type != TITLED) {
         gtk_window_set_decorated(GTK_WINDOW(gtk_widget), FALSE);
@@ -760,6 +759,12 @@ WindowContextTop::WindowContextTop(jobject _jwindow, WindowContext* _owner, long
     gtk_window_set_title(GTK_WINDOW(gtk_widget), "");
 
     gdk_window = gtk_widget_get_window(gtk_widget);
+
+    // The event mask has to be set to a value that doesn't contain GDK_TOUCH_MASK on gtk3. This will
+    // cause gtk to generate normal mouse button events instead of touch events which are currently
+    // not handled. For some reason setting this value with gtk_widget_set_events() doesn't seem to
+    // cause this behavior.
+    gdk_window_set_events(gdk_window, SUPPORTED_GDK_EVENTS);
 
     g_object_set_data_full(G_OBJECT(gdk_window), GDK_WINDOW_DATA_CONTEXT, this, NULL);
 
@@ -1515,7 +1520,7 @@ WindowContextPlug::WindowContextPlug(jobject _jwindow, void* _owner) :
     g_signal_connect(G_OBJECT(gtk_widget), "configure-event", G_CALLBACK(plug_configure), this);
 
     gtk_widget_set_size_request(gtk_widget, 0, 0);
-    gtk_widget_set_events(gtk_widget, GDK_ALL_EVENTS_MASK);
+    gtk_widget_set_events(gtk_widget, SUPPORTED_GDK_EVENTS);
     gtk_widget_set_can_focus(GTK_WIDGET(gtk_widget), TRUE);
     gtk_widget_set_app_paintable(gtk_widget, TRUE);
 
@@ -1683,7 +1688,7 @@ WindowContextChild::WindowContextChild(jobject _jwindow,
         glass_gtk_window_configure_from_visual(gtk_widget, visual);
     }
 
-    gtk_widget_set_events(gtk_widget, GDK_ALL_EVENTS_MASK);
+    gtk_widget_set_events(gtk_widget, SUPPORTED_GDK_EVENTS);
     gtk_widget_set_can_focus(GTK_WIDGET(gtk_widget), TRUE);
     gtk_widget_set_app_paintable(gtk_widget, TRUE);
     gtk_container_add (GTK_CONTAINER(parent_widget), gtk_widget);

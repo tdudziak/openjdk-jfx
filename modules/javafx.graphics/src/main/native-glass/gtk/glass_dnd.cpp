@@ -529,7 +529,7 @@ static GdkWindow* get_dnd_window()
         attr.window_type = GDK_WINDOW_TEMP;
         attr.type_hint = GDK_WINDOW_TYPE_HINT_UTILITY;
         attr.wclass = GDK_INPUT_OUTPUT;
-        attr.event_mask = GDK_ALL_EVENTS_MASK;
+        attr.event_mask = SUPPORTED_GDK_EVENTS;
         dnd_window = gdk_window_new(NULL, &attr, GDK_WA_NOREDIR | GDK_WA_TYPE_HINT);
 
         gdk_window_move(dnd_window, -100, -100);

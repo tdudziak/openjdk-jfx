@@ -593,7 +593,7 @@ glass_gdk_master_pointer_grab(GdkWindow *window, GdkCursor *cursor) {
         gdk_device_grab(gdk_device_manager_get_client_pointer(
                     gdk_display_get_device_manager(
                         gdk_display_get_default())),
-                    window, GDK_OWNERSHIP_NONE, FALSE, GDK_ALL_EVENTS_MASK,
+                    window, GDK_OWNERSHIP_NONE, FALSE, SUPPORTED_GDK_EVENTS,
                     cursor, GDK_CURRENT_TIME);
 #else
         gdk_pointer_grab(window, FALSE, (GdkEventMask)
@@ -768,7 +768,7 @@ grab_mouse_device(GdkDevice *device, DeviceGrabContext *context) {
                                                context->window,
                                                GDK_OWNERSHIP_NONE,
                                                TRUE,
-                                               GDK_ALL_EVENTS_MASK,
+                                               SUPPORTED_GDK_EVENTS,
                                                NULL,
                                                GDK_CURRENT_TIME);
 #else
@@ -778,7 +778,7 @@ grab_mouse_device(GdkDevice *device, DeviceGrabContext *context) {
                                                context->window,
                                                GDK_OWNERSHIP_NONE,
                                                TRUE,
-                                               GDK_ALL_EVENTS_MASK,
+                                               SUPPORTED_GDK_EVENTS,
                                                NULL,
                                                GDK_CURRENT_TIME);
                                        */
